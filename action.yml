@@ -1,9 +1,9 @@
-name: "Build Android release APK when create new tag"
+name: "Build Android release APK when create new tag."
 branding:
   icon: "package"
   color: "red"
 description: "Build Android release APK and upload as a github release match the created new tag"
-author: "kyze8439690"
+author: "HeCodes2Much"
 inputs:
   GITHUB_TOKEN:
     description: "Github secret token to allow automated publishing of APK to release."
