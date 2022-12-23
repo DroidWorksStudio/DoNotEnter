@@ -17,7 +17,12 @@ jobs:
   cleanup:
     name: Clean Out Branches
     runs-on: ubuntu-latest
-    steps:       
+    steps:
+      - name: Check out code
+        - uses: actions/checkout@v3
+          with:
+            ref: main
+
       - name: Get branch name (merge)
         if: github.event_name != 'pull_request'
         shell: bash
