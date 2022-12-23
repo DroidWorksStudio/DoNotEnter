@@ -4,10 +4,12 @@ name: Android Feature Branch Wrong CI
 on:
   push:
     branches:
-      - 'fix/**'
-      - 'cleanup/**'
-      - 'bug/**'
-      - 'feature/**'
+      - '*'
+      - '*/**'
+      - '!fix/**'
+      - '!cleanup/**'
+      - '!bug/**'
+      - '!feature/**'
       - '!main'
   workflow_dispatch:
 
