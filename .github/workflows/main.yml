@@ -19,9 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        - uses: actions/checkout@v3
-          with:
-            ref: main
+        uses: actions/checkout@v3
+        with:
+          ref: my-branch
 
       - name: Get branch name (merge)
         if: github.event_name != 'pull_request'
