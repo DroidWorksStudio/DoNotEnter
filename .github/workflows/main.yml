@@ -18,11 +18,6 @@ jobs:
     name: Clean Out Branches
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-        with:
-          ref: my-branch
-
       - name: Get branch name (merge)
         if: github.event_name != 'pull_request'
         shell: bash
@@ -35,6 +30,11 @@ jobs:
 
       - name: Debug
         run: echo ${{ env.BRANCH_NAME }}
+
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          ref: main
 
       - name: Delete git branch
         run: git branch -d ${{ env.BRANCH_NAME }}
