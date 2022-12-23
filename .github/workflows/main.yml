@@ -6,10 +6,10 @@ on:
     branches:
       - '*'
       - '*/**'
-      - '!fix/**'
-      - '!cleanup/**'
-      - '!bug/**'
-      - '!feature/**'
+      - 'fix/**'
+      - 'cleanup/**'
+      - 'bug/**'
+      - 'feature/**'
       - '!main'
   workflow_dispatch:
 
@@ -30,6 +30,9 @@ jobs:
 
       - name: Debug
         run: echo ${{ env.BRANCH_NAME }}
+
+      - name: Check out code
+        uses: actions/checkout@v2
 
       - name: Delete git branch
         run: git branch -d ${{ env.BRANCH_NAME }}
