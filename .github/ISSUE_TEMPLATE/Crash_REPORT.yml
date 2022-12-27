@@ -33,16 +33,16 @@ body:
       With what operating system (+ version) did you encounter the bug?
      placeholder: "Example: Android 10"
   - type: dropdown
-  id: download
-  attributes:
-    label: How did you download the software?
-    options:
-      - Homebrew
-      - MacPorts
-      - apt-get
-      - Built from source
-  validations:
-    required: true
+    id: download
+    attributes:
+      label: How did you download the software?
+      options:
+        - Homebrew
+        - MacPorts
+        - apt-get
+        - Built from source
+    validations:
+      required: true
 
   - type: textarea
     id: steps-to-reproduce
