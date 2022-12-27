@@ -1,6 +1,7 @@
 name: Crash Report
 description: Create a report with a generated crash log attached (if possible) to help Open Launcher improve
 labels: ['Type: Crash report']
+assignees: ['The-Repo-Club']
 body:
   - type: markdown
     attributes:
@@ -13,11 +14,7 @@ body:
     attributes:
       label: "Checklist"
       options:
-        - label: "I made sure that there are **no existing issues** - [open](https://github.com/HeCodes2Much/OpenLauncher/issues) or [closed](https://github.com/HeCodes2Much/OpenLauncher/issues?q=is%3Aissue+is%3Aclosed) - which I could contribute my information to."
-          required: true
-        - label: "I have taken the time to fill in all the required details. I understand that the bug report will be dismissed otherwise."
-          required: true
-        - label: "This issue contains only one bug."
+        - label: "I have updated the title to best match the issue."
           required: true
 
   - type: input
