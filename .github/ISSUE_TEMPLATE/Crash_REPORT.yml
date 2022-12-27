@@ -6,8 +6,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for helping me to make Open Launcher better by reporting a bug. :hugs:
-        Please fill in as much information as possible about your bug so that I can fix it immediately.
+        Thank you for helping me to make Open Launcher better by reporting a crash. :hugs:
+        Please fill in as much information as possible about your crash so that I can fix it immediately.
 
   - type: checkboxes
     id: checklist
@@ -20,9 +20,8 @@ body:
   - type: input
     id: app-version
     attributes:
-     label: App version
-     description: "In which version did you encounter the bug?"
-     placeholder: "xx.xx - Can be seen in the app from the 'Settings' section"
+     label: Short description
+     description: "Describe what you were doing that could've led to the crash."
     validations:
       required: true
 
