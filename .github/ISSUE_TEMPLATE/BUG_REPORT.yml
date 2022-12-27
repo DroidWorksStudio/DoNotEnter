@@ -1,6 +1,6 @@
-name: Bug report
-description: Create a bug report
-labels: [bug]
+name: Crash Report
+description: Create a report with a generated crash log attached (if possible) to help Open Launcher improve
+labels: ['Type: Crash report']
 body:
   - type: markdown
     attributes:
@@ -68,7 +68,7 @@ body:
         <details>
           <summary>Context</summary>
 
-          Add your long texts or screenshots here
+          screenshots go in here
 
         </details>
 
