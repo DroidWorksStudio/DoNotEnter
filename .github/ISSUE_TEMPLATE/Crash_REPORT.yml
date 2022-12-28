@@ -18,14 +18,6 @@ body:
         - label: "I know that if existing issues are available, this issue will be closed without comment, unless an explaination is given on why this new issue is needed."
           required: true
 
-  - type: input
-    id: app-version
-    attributes:
-     label: Short description
-     description: "Describe what you were doing that could've led to the crash."
-    validations:
-      required: true
-
   - type: textarea
     id: bug-description
     attributes:
