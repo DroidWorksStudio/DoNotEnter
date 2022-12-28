@@ -1,20 +1,27 @@
-name: Crash Report
-description: Create a report with a generated crash log attached (if possible) to help Open Launcher improve
-labels: ['Type: Crash report']
-assignees: ['The-Repo-Club']
+name: Bug report
+description: Create a report to help Olauncher CF improve
+labels: ['bug']
 body:
   - type: markdown
     attributes:
       value: |
-        Thank you for helping me to make Open Launcher better by reporting a crash. :hugs:
-        Please fill in as much information as possible about your crash so that I can fix it immediately.
+        Thank you for helping me to make Open Launcher better by reporting a bug. :hugs:
+        Please fill in as much information as possible about your bug so that I can fix it immediately.
 
   - type: checkboxes
     id: checklist
     attributes:
       label: "Checklist"
       options:
-        - label: "I have updated the title to best match the issue."
+        - label: "I have searched existing issues for this bug."
+          required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Checklist"
+      options:
+        - label: "I know that if existing issues are available, this issue will be closed without comment, unless an explaination is given on why this new issue is needed."
           required: true
 
   - type: input
@@ -25,25 +32,16 @@ body:
     validations:
       required: true
 
-  - type: input
-    id: device-os-info
+  - type: textarea
+    id: bug-description
     attributes:
-     label: Android version
-     description: |
-      With what operating system (+ version) did you encounter the bug?
-     placeholder: "Example: Android 10"
-  - type: dropdown
-    id: download
-    attributes:
-      label: How did you download the software?
-      options:
-        - Homebrew
-        - MacPorts
-        - apt-get
-        - Built from source
+      label: Bug description
+      placeholder: |
+        1. Go to '...'
+        2. Press on '....'
     validations:
       required: true
-
+      
   - type: textarea
     id: steps-to-reproduce
     attributes:
@@ -58,11 +56,14 @@ body:
       required: true
 
   - type: textarea
-    id: expected-behavior
+    id: environment-information
     attributes:
-      label: Expected behavior
-      description: |
-        Tell us what you expect to happen.
+      label: Environment information
+      placeholder: |
+        - Olauncher CF version:
+        - Device name:
+        - Android version:
+        - Other information:
 
   - type: textarea
     id: screen-media
@@ -80,24 +81,8 @@ body:
         </details>
 
   - type: textarea
-    id: logs
-    attributes:
-      label: Logs
-      description: |
-        If you could catch the log of the bug, don't forget to share it. This is the best way to point out any bug.
-
-  - type: textarea
     id: additional-information
     attributes:
       label: Additional information
       description: |
-        Any other information you'd like to include.
-        
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
-      options:
-        - label: I agree to follow this project's Code of Conduct
-          required: true
+        Additional context (that might help us to solve your problem)
