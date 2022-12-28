@@ -23,8 +23,7 @@ body:
     attributes:
       label: Bug description
       placeholder: |
-        1. Go to '...'
-        2. Press on '....'
+        ...
     validations:
       required: true
       
