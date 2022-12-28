@@ -13,9 +13,7 @@ body:
     attributes:
       label: "Checklist"
       options:
-        - label: |
-        "I have searched existing issues for this bug."
-        "I know that if existing issues are available, this issue will be closed without comment, unless an explaination is given on why this new issue is needed."
+        - label: "I know that if existing issues are available, this issue will be closed without comment, unless an explaination is given on why this new issue is needed."
           required: true
 
   - type: input
