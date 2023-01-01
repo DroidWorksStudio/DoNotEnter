@@ -1,15 +1,76 @@
-name: "Pull Request Workflow"
+name: Changelog Update
 on:
-  pull_request:
-    # The specific activity types are listed here to include "labeled" and "unlabeled"
-    # (which are not included by default for the "pull_request" trigger).
-    # This is needed to allow skipping enforcement of the changelog in PRs with specific labels,
-    # as defined in the (optional) "skipLabels" property.
-    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
-
+  schedule:
+    - cron: "0 */2 * * * "
+  workflow_dispatch:
 jobs:
-  # Enforces the update of a changelog file on every pull request 
-  changelog:
+  changelog-pull:
+    runs-on: ubuntu-latest
+    outputs:
+      newPosts: ${{ steps.changelog_pull.outputs.newFaunaPostsAdded }}
+    steps:
+      - uses: actions/checkout@v1
+      - uses: ./.github/actions/changelog-pull-action
+        id: changelog_pull
+        env:
+          FAUNADB_TOKEN: ${{ secrets.FAUNADB_TOKEN }}
+  build:
+    needs: [changelog-pull]
+    if: needs.changelog-pull.outputs.newPosts != 0
     runs-on: ubuntu-latest
     steps:
-    - uses: dangoslen/changelog-enforcer@v3
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '14.13.x'
+      - name: Build
+        env:
+          FAUNADB_TOKEN: ${{ secrets.FAUNADB_TOKEN }}
+          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+        run: |
+          yarn
+          yarn build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: public-dir
+          path: public/
+  gen-og-images:
+    needs: [changelog-pull]
+    if: needs.changelog-pull.outputs.newPosts != 0
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build files
+        run: |
+          cd .github/actions/gen-og-images-action
+          yarn
+          yarn build
+          node index.js
+      - name: Upload files
+        uses: actions/upload-artifact@v2
+        with:
+          name: og-images
+          path: .github/actions/gen-og-images-action/dist/posts/
+  deploy:
+    needs: [gen-og-images, build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: get public dir
+        uses: actions/download-artifact@v2
+        with:
+          name: public-dir
+          path: public
+      - name: get og-images dir
+        uses: actions/download-artifact@v2
+        with:
+          name: og-images
+          path: public/og-images/
+      - name: deploy to netlify
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: npx netlify-cli deploy --dir=public --prod
