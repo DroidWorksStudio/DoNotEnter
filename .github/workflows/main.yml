@@ -1,9 +1,11 @@
-name: Changelog
+name: Update CHANGELOG.md
+
 on:
-  release:
-    types:
-      - created
+  push:
+    tags:
+      - '*'
   workflow_dispatch:
+  
 jobs:
   changelog:
     runs-on: ubuntu-20.04
@@ -18,5 +20,5 @@ jobs:
           git config --global user.email "torvalds@linux-foundation.org"
       
           git add -A
-          git commit -m "commit message"
+          git commit -m "Update CHANGELOG.md"
           git push
