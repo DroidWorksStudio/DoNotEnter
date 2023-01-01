@@ -1,30 +1,28 @@
-# Builds the project, signs an API, and then uploads it
-name: Android Main Branch CI
+name: "Update Changelog"
 
 on:
-  push:
-    branches:
-      - 'main'
-  workflow_dispatch:
+  release:
+    types: [released]
 
 jobs:
-  deploy:
+  update:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Update CHANGELOG
-        id: changelog
-        uses: requarks/changelog-action@v1
         with:
-          token: ${{ github.token }}
-          tag: ${{ github.ref_name }}
+          ref: ${{ github.event.release.target_commitish }}
 
-      - name: Commit CHANGELOG.md
+      - name: Update Changelog
+        uses: stefanzweifel/changelog-updater-action@v1
+        with:
+          latest-version: ${{ github.event.release.tag_name }}
+          release-notes: ${{ github.event.release.body }}
+
+      - name: Commit updated CHANGELOG
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          branch: main
-          commit_message: 'docs: update CHANGELOG.md for ${{ github.ref_name }} [skip ci]'
+          branch: ${{ github.event.release.target_commitish }}
+          commit_message: Update CHANGELOG
           file_pattern: CHANGELOG.md
