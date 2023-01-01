@@ -5,12 +5,6 @@ on:
   push:
     branches:
       - '*'
-      - '*/**'
-      - 'fix/**'
-      - 'cleanup/**'
-      - 'bug/**'
-      - 'feature/**'
-      - '!main'
   workflow_dispatch:
 
 jobs:
@@ -19,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Build Changelog"
-        uses: mikepenz/release-changelog-builder-action@{latest-release}
+        uses: mikepenz/release-changelog-builder-action@v3.5.0
         with:
           configuration: "configuration.json"
         env:
