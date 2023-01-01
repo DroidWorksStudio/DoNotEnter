@@ -14,8 +14,8 @@ jobs:
       
       - name: Commit and push changes
         run: |
-          git config --global user.name "torvalds@linux-foundation.org"
-          git config --global user.email "torvalds"
+          git config --global user.name "torvalds"
+          git config --global user.email "torvalds@linux-foundation.org"
       
           git add -A
           git commit -m "commit message"
