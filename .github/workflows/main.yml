@@ -5,13 +5,12 @@ on:
     types: [ opened ]
 
 jobs:
-  build:
+  update-changelog:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Run Changelog CI
-        uses: saadmk11/changelog-ci@v1.1.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@v2
+    
+    - name: Update changelog
+      uses: thomaseizinger/keep-a-changelog-new-release@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
