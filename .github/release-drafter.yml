@@ -23,6 +23,7 @@ version-resolver:
     labels:
       - 'patch'
   default: patch
+header: |
+  ## What’s Changed
 template: |
-  ## Changes
   $CHANGES
