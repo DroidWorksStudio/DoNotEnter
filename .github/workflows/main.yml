@@ -1,76 +1,13 @@
-name: Changelog Update
+name: Changelog
 on:
-  schedule:
-    - cron: "0 */2 * * * "
-  workflow_dispatch:
+  release:
+    types:
+      - created
 jobs:
-  changelog-pull:
-    runs-on: ubuntu-latest
-    outputs:
-      newPosts: ${{ steps.changelog_pull.outputs.newFaunaPostsAdded }}
+  changelog:
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v1
-      - uses: ./.github/actions/changelog-pull-action
-        id: changelog_pull
-        env:
-          FAUNADB_TOKEN: ${{ secrets.FAUNADB_TOKEN }}
-  build:
-    needs: [changelog-pull]
-    if: needs.changelog-pull.outputs.newPosts != 0
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2-beta
+      - name: "✏️ Generate release changelog"
+        uses: heinrichreimer/github-changelog-generator-action@v2.3
         with:
-          node-version: '14.13.x'
-      - name: Build
-        env:
-          FAUNADB_TOKEN: ${{ secrets.FAUNADB_TOKEN }}
-          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
-          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
-          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
-        run: |
-          yarn
-          yarn build
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: public-dir
-          path: public/
-  gen-og-images:
-    needs: [changelog-pull]
-    if: needs.changelog-pull.outputs.newPosts != 0
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build files
-        run: |
-          cd .github/actions/gen-og-images-action
-          yarn
-          yarn build
-          node index.js
-      - name: Upload files
-        uses: actions/upload-artifact@v2
-        with:
-          name: og-images
-          path: .github/actions/gen-og-images-action/dist/posts/
-  deploy:
-    needs: [gen-og-images, build]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: get public dir
-        uses: actions/download-artifact@v2
-        with:
-          name: public-dir
-          path: public
-      - name: get og-images dir
-        uses: actions/download-artifact@v2
-        with:
-          name: og-images
-          path: public/og-images/
-      - name: deploy to netlify
-        env:
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: npx netlify-cli deploy --dir=public --prod
+          token: ${{ secrets.GITHUB_TOKEN }} 
