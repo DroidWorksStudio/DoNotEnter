@@ -20,5 +20,5 @@ jobs:
           git config --global user.email ${{ secrets.GIT_EMAIL }}
       
           git add -A
-          git commit -m "Update CHANGELOG.md"
+          git commit -m "Update CHANGELOG.md" --allow-empty
           git push origin main
