@@ -1,5 +1,7 @@
 name-template: '$RESOLVED_VERSION-mLauncher'
 tag-template: '$RESOLVED_VERSION'
+exclude-labels:
+  - 'Type: Wont Fix'
 categories:
   - title: '🚀 Features'
     labels:
