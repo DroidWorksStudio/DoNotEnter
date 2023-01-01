@@ -1,12 +1,16 @@
 # Changelog
 
-## [0.1.0](https://github.com/HeCodes2Much/temp/tree/0.1.0) (2023-01-01)
+## [0.1.0](https://github.com/HeCodes2Much/temp/tree/0.1.0) ( 1, January 2023)
 
 [Full Changelog](https://github.com/HeCodes2Much/temp/compare/5841972672c270281e6cc3ede75f28f4e0e89740...0.1.0)
 
 **Implemented enhancements:**
 
 - Create test.md [\#3](https://github.com/HeCodes2Much/temp/pull/3) ([The-Repo-Club](https://github.com/The-Repo-Club))
+
+**Fixed bugs:**
+
+- Delete new.txt [\#7](https://github.com/HeCodes2Much/temp/pull/7) ([The-Repo-Club](https://github.com/The-Repo-Club))
 
 **Merged pull requests:**
 
@@ -22,9 +26,7 @@
 - Create CHANGELOG.md [\#10](https://github.com/HeCodes2Much/temp/pull/10) ([The-Repo-Club](https://github.com/The-Repo-Club))
 - Delete tmp [\#9](https://github.com/HeCodes2Much/temp/pull/9) ([The-Repo-Club](https://github.com/The-Repo-Club))
 - Create tmp [\#8](https://github.com/HeCodes2Much/temp/pull/8) ([The-Repo-Club](https://github.com/The-Repo-Club))
-- Delete new.txt [\#7](https://github.com/HeCodes2Much/temp/pull/7) ([The-Repo-Club](https://github.com/The-Repo-Club))
 - Delete test.md [\#5](https://github.com/HeCodes2Much/temp/pull/5) ([The-Repo-Club](https://github.com/The-Repo-Club))
-- Create new.txt [\#4](https://github.com/HeCodes2Much/temp/pull/4) ([The-Repo-Club](https://github.com/The-Repo-Club))
 - The repo club patch 1 [\#2](https://github.com/HeCodes2Much/temp/pull/2) ([The-Repo-Club](https://github.com/The-Repo-Club))
 - Create temp1.md [\#1](https://github.com/HeCodes2Much/temp/pull/1) ([The-Repo-Club](https://github.com/The-Repo-Club))
 
