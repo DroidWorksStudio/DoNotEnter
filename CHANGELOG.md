@@ -1,4 +1,11 @@
+## 0.1.1 - 2023-01-01
+
+### What’s Changed
+
+- Create CHANGELOG.md @The-Repo-Club (#10)
+
 ## What’s Changed
+
 - Delete tmp @The-Repo-Club (#9)
 - Create tmp @The-Repo-Club (#8)
 - The repo club patch 1 @The-Repo-Club (#2)
