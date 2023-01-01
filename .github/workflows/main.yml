@@ -8,9 +8,9 @@ jobs:
   update-changelog:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    
-    - name: Update changelog
-      uses: thomaseizinger/keep-a-changelog-new-release@v1
+    - name: Changelog
+      uses: scottbrenner/generate-changelog-action@master
+      id: Changelog
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        from-tag: v1.0
+        to-tag: HEAD
