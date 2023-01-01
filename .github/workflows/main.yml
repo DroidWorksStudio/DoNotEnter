@@ -1,5 +1,5 @@
 # Removes a branch if the name doesnt match.
-name: Android Feature Branch Wrong CI
+name: release-changelog-builder-action
 
 on:
   push:
@@ -9,12 +9,10 @@ on:
 
 jobs:
   cleanup:
-    name: Clean Out Branches
+    name: release-changelog-builder-action
     runs-on: ubuntu-latest
     steps:
       - name: "Build Changelog"
         uses: mikepenz/release-changelog-builder-action@v3.5.0
-        with:
-          configuration: "configuration.json"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
