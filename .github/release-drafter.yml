@@ -1,15 +1,13 @@
-name-template: 'v$RESOLVED_VERSION 🌈'
-tag-template: 'v$RESOLVED_VERSION'
+name-template: '$RESOLVED_VERSION-mLauncher'
+tag-template: '$RESOLVED_VERSION'
 categories:
   - title: '🚀 Features'
     labels:
-      - 'feature'
-      - 'enhancement'
+      - 'Type: Feature'
+      - 'Type: Enhancement'
   - title: '🐛 Bug Fixes'
     labels:
-      - 'fix'
-      - 'bugfix'
-      - 'bug'
+      - 'Type: Bug Report'
   - title: '🧰 Maintenance'
     label: 'chore'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
@@ -27,5 +25,4 @@ version-resolver:
   default: patch
 template: |
   ## Changes
-
   $CHANGES
