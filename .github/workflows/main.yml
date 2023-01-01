@@ -1,18 +1,20 @@
-# Removes a branch if the name doesnt match.
-name: release-changelog-builder-action
+# Builds the project, signs an API, and then uploads it
+name: Android Main Branch CI
 
 on:
   push:
     branches:
-      - '*'
+      - 'main'
   workflow_dispatch:
 
 jobs:
-  cleanup:
-    name: release-changelog-builder-action
+  build:
+    name: Tester
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+
       - name: "Build Changelog"
-        uses: mikepenz/release-changelog-builder-action@v3.5.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@{latest-release}
