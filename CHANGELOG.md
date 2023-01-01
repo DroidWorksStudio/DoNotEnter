@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1](https://github.com/HeCodes2Much/temp/tree/0.1.1) ( 1, January 2023)
+
+[Full Changelog](https://github.com/HeCodes2Much/temp/compare/0.1.0...0.1.1)
+
+**Merged pull requests:**
+
+- Create LICENSE [\#21](https://github.com/HeCodes2Much/temp/pull/21) ([The-Repo-Club](https://github.com/The-Repo-Club))
+
 ## [0.1.0](https://github.com/HeCodes2Much/temp/tree/0.1.0) ( 1, January 2023)
 
 [Full Changelog](https://github.com/HeCodes2Much/temp/compare/5841972672c270281e6cc3ede75f28f4e0e89740...0.1.0)
