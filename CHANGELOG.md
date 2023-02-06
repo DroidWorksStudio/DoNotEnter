@@ -1,8 +1,8 @@
 # Changelog
 
-## [Coming Soon](https://github.com/HeCodes2Much/temp/tree/HEAD)
+## [1.0.0](https://github.com/HeCodes2Much/temp/tree/1.0.0) ( 6, February 2023)
 
-[Full Changelog](https://github.com/HeCodes2Much/temp/compare/5841972672c270281e6cc3ede75f28f4e0e89740...HEAD)
+[Full Changelog](https://github.com/HeCodes2Much/temp/compare/5841972672c270281e6cc3ede75f28f4e0e89740...1.0.0)
 
 **Implemented enhancements:**
 
