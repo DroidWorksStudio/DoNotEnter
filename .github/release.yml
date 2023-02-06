@@ -23,6 +23,3 @@ changelog:
     - title: "🔨 Wont Fix"
       label:
         - "Type: Wont Fix"
-    - title: "⚡ Other Changes"
-      labels:
-        - "*"
