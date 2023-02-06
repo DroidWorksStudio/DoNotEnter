@@ -5,14 +5,21 @@ changelog:
     authors:
       - octocat
   categories:
-    - title: Breaking Changes 🛠
+    - title: '🚀 Enhancement'
       labels:
-        - Semver-Major
-        - breaking-change
-    - title: Exciting New Features 🎉
+        - 'Type: Enhancement'
+    - title: '🐛 Bug Fixes'
       labels:
-        - Semver-Minor
-        - enhancement
+        - 'Type: Bug Report'
+    - title: '🧰 Crash Report'
+      label: 
+        - 'Type: Crash Report'
+    - title: '🔨 Wont Fix'
+      label: 
+        - 'Type: Wont Fix'
+    - title: '✅ Release'
+      label: 
+        - 'Type: Release'
     - title: Other Changes
       labels:
         - "*"
