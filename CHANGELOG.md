@@ -1,20 +1,8 @@
 # Changelog
 
-## [0.0.2](https://github.com/HeCodes2Much/temp/tree/0.0.2) ( 1, January 2023)
+## [Coming Soon](https://github.com/HeCodes2Much/temp/tree/HEAD)
 
-[Full Changelog](https://github.com/HeCodes2Much/temp/compare/0.1.2...0.0.2)
-
-## [0.1.2](https://github.com/HeCodes2Much/temp/tree/0.1.2) ( 1, January 2023)
-
-[Full Changelog](https://github.com/HeCodes2Much/temp/compare/0.1.1...0.1.2)
-
-## [0.1.1](https://github.com/HeCodes2Much/temp/tree/0.1.1) ( 1, January 2023)
-
-[Full Changelog](https://github.com/HeCodes2Much/temp/compare/0.1.0...0.1.1)
-
-## [0.1.0](https://github.com/HeCodes2Much/temp/tree/0.1.0) ( 1, January 2023)
-
-[Full Changelog](https://github.com/HeCodes2Much/temp/compare/5841972672c270281e6cc3ede75f28f4e0e89740...0.1.0)
+[Full Changelog](https://github.com/HeCodes2Much/temp/compare/5841972672c270281e6cc3ede75f28f4e0e89740...HEAD)
 
 **Implemented enhancements:**
 
