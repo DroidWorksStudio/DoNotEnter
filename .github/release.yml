@@ -1,28 +1,28 @@
 changelog:
   exclude:
     labels:
-      - 'Ignore Release'
+      - "Ignore Release"
     authors:
       - octocat
   categories:
-    - title: '🚀 Enhancement'
+    - title: "🚀 Enhancement"
       labels:
-        - 'Type: Enhancement'
-    - title: '🐛 Bug Fixes'
+        - "Type: Enhancement"
+    - title: "🐛 Bug Fixes"
       labels:
-        - 'Type: Bug Report'
-    - title: '⚠️ Crash Report'
+        - "Type: Bug Report"
+    - title: "⚠️ Crash Report"
       label:
-        - 'Type: Crash Report'
-    - title: '🈯️ Language Support'
+        - "Type: Crash Report"
+    - title: "🈯️ Language Support"
       label:
-        - 'Type: Language Support'
-    - title: '✅ Release'
+        - "Type: Language Support"
+    - title: "✅ Release"
       label:
-        - 'Type: Release'
-    - title: '🔨 Wont Fix'
+        - "Type: Release"
+    - title: "🔨 Wont Fix"
       label:
-        - 'Type: Wont Fix'
-    - title: '⚡ Other Changes'
+        - "Type: Wont Fix"
+    - title: "⚡ Other Changes"
       labels:
         - "*"
