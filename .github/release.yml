@@ -7,22 +7,22 @@ changelog:
   categories:
     - title: "🚀 Enhancement"
       labels:
-        - "*Enhancement*"
+        - "Type: Enhancement"
     - title: "🐛 Bug Fixes"
       labels:
-        - "*Bug Report*"
+        - "Type: Bug Report"
     - title: "⚠️ Crash Report"
       label:
-        - "*Crash Report*"
+        - "Type: Crash Report"
     - title: "🈯️ Language Support"
       label:
-        - "*Language Support*"
+        - "Type: Language Support"
     - title: "✅ Release"
       label:
-        - "*Release*"
+        - "Type: Release"
     - title: "🔨 Wont Fix"
       label:
-        - "*Wont Fix*"
+        - "Type: Wont Fix"
     - title: "⚡ Other Changes"
       labels:
         - "*"
