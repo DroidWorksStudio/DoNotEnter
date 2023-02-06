@@ -11,9 +11,6 @@ changelog:
     - title: "🐛 Bug Fixes"
       labels:
         - "Type: Bug Report"
-    - title: "⚠️ Crash Report"
-      label:
-        - "Type: Crash Report"
     - title: "🈯️ Language Support"
       label:
         - "Type: Language Support"
