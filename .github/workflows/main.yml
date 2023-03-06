@@ -18,7 +18,6 @@ jobs:
       with:
         entrypoint: /usr/bin/env
         args: sh -c "pacman -Syu --noconfirm && pacman -S --noconfirm base-devel git"
-      
 
     - name: Loop Through Packages and Build
       run: |
