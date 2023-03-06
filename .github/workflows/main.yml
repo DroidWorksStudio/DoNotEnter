@@ -34,7 +34,7 @@ jobs:
               -u "$(id -u):$(id -g)" \
               --tmpfs /tmp:exec \
               docker.io/archlinux \
-              sh -c "useradd -m builder && chown -R builder:builder /build && su builder -c 'cd /build && makepkg --syncdeps --noconfirm && cp *.pkg.tar.zst /build'"
+              sh -c "sudo useradd -m builder && sudo chown -R builder:builder /build && su builder -c 'cd /build && makepkg --syncdeps --noconfirm && cp *.pkg.tar.zst /build'"
           done < aur_packages.txt
 
       - name: Upload Packages to Release
