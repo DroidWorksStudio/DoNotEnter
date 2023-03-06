@@ -8,20 +8,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: archlinux
-      options: --privileged
-      volumes:
-        - /sys/fs/cgroup:/sys/fs/cgroup
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
+
+    - name: Setup Arch Linux
+      uses: docker://archlinux/base
+      with:
+        entrypoint: /usr/bin/env
+        args: sh -c "pacman -Syu --noconfirm && pacman -S --noconfirm base-devel git"
       
-    - name: Install Dependencies
-      run: |
-        sudo pacman -Syu --noconfirm
-        sudo pacman -S --noconfirm git base-devel
 
     - name: Loop Through Packages and Build
       run: |
