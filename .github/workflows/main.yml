@@ -22,7 +22,7 @@ jobs:
           image: docker.io/archlinux
           dockerfile: |
             FROM docker.io/archlinux
-            RUN pacman -Syu --noconfirm && pacman -S --noconfirm base-devel git
+            RUN pacman -Syu --noconfirm && pacman -S --noconfirm base-devel git sudo
 
       - name: Loop Through Packages and Build
         run: |
@@ -36,6 +36,7 @@ jobs:
               docker.io/archlinux \
               sh -c "sudo useradd -m builder && sudo chown -R builder:builder /build && su builder -c 'cd /build && makepkg --syncdeps --noconfirm && cp *.pkg.tar.zst /build'"
           done < aur_packages.txt
+
 
       - name: Upload Packages to Release
         uses: actions/upload-release-asset@v1
