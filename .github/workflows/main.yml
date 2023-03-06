@@ -24,10 +24,11 @@ jobs:
       - name: Loop Through Packages and Build
         run: |
           while read -r package; do
-            git clone "https://aur.archlinux.org/$package.git"
-            cd "$package"
-            makepkg --syncdeps --noconfirm
-            cd ..
+            docker run --rm \
+              -v "$(pwd)/$package:/package" \
+              -w "/package" \
+              docker.io/archlinux \
+              sh -c "makepkg --syncdeps --noconfirm"
           done < aur_packages.txt
 
       - name: Upload Packages to Release
