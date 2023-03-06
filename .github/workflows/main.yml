@@ -28,7 +28,7 @@ jobs:
             docker run --rm \
               -v "$(pwd)/$package:/package" \
               -w "/package" \
-              -u builder \
+              -u "$(id -u builder):$(id -g builder)" \
               docker.io/archlinux \
               sh -c "makepkg --syncdeps --noconfirm"
           done < aur_packages.txt
