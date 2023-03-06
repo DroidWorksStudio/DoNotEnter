@@ -29,11 +29,13 @@ jobs:
           while read -r package; do
             docker run --rm \
               -v "$(pwd)/$package:/package" \
+              -v "$(pwd)/aur_packages.txt:/aur_packages.txt" \
               -w "/package" \
               -u "$(id -u builder):$(id -g builder)" \
               docker.io/archlinux \
-              sh -c "makepkg --syncdeps --noconfirm"
+              sh -c "chmod u+w /package && makepkg --syncdeps --noconfirm"
           done < aur_packages.txt
+
 
       - name: Upload Packages to Release
         uses: actions/upload-release-asset@v1
