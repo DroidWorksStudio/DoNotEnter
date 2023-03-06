@@ -31,10 +31,10 @@ jobs:
               -v "$(pwd)/$package:/build" \
               -v "$(pwd)/aur_packages.txt:/aur_packages.txt" \
               -w "/build" \
-              -u "$(id -u builder):$(id -g builder)" \
+              -u "$(id -u):$(id -g)" \
               --tmpfs /tmp:exec \
               docker.io/archlinux \
-              sh -c "chown -R builder:builder /build && cd /build && makepkg --syncdeps --noconfirm && cp *.pkg.tar.zst /build"
+              sh -c "useradd -m builder && chown -R builder:builder /build && su builder -c 'cd /build && makepkg --syncdeps --noconfirm && cp *.pkg.tar.zst /build'"
           done < aur_packages.txt
 
       - name: Upload Packages to Release
