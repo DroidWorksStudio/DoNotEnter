@@ -19,7 +19,8 @@ jobs:
           image: docker.io/archlinux
           dockerfile: |
             FROM docker.io/archlinux
-            RUN pacman -Syu --noconfirm && pacman -S --noconfirm base-devel git
+            RUN pacman -Syu --noconfirm && pacman -S --noconfirm base-devel git && \
+                useradd -m builder
 
       - name: Loop Through Packages and Build
         run: |
@@ -27,6 +28,7 @@ jobs:
             docker run --rm \
               -v "$(pwd)/$package:/package" \
               -w "/package" \
+              -u builder \
               docker.io/archlinux \
               sh -c "makepkg --syncdeps --noconfirm"
           done < aur_packages.txt
