@@ -28,7 +28,7 @@ jobs:
         run: |
           while read -r package; do
             docker run --rm \
-              --privileged \
+              --userns=host \
               -v "$(pwd)/$package:/package" \
               -v "$(pwd)/aur_packages.txt:/aur_packages.txt" \
               -w "/package" \
