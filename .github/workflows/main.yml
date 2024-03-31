@@ -1,50 +1,50 @@
-name: Build and Release AUR Packages
+name: Update CHANGELOG.md
 
 on:
   push:
+    tags:
+      - '*'
     branches:
       - main
-
+  workflow_dispatch:
+  
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
+  changelog:
+    runs-on: ubuntu-20.04
     steps:
-      - name: Create builder user
-        run: sudo useradd -m builder
-
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Setup Arch Linux
-        uses: docker/setup-buildx-action@v1
+      - name: Check out repository
+        uses: actions/checkout@v3
         with:
-          image: docker.io/archlinux
-          dockerfile: |
-            FROM docker.io/archlinux
-            RUN pacman -Syu --noconfirm && pacman -S --noconfirm base-devel git sudo
+          token: ${{ secrets.GIT_BOT_TOKEN }}
+          fetch-depth: 0
 
-      - name: Loop Through Packages and Build
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v3
+        with:
+          config: cliff.toml
+          args: --verbose
+        env:
+          OUTPUT: CHANGELOG.md
+        
+      - name: Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v2
+        with:
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GIT_ACTIONS_GPG_KEY }}
+      
+      - name: Commit and push changes
         run: |
-          while read -r package; do
-            docker run --rm \
-              -v "$(pwd)/$package:/build" \
-              -v "$(pwd)/aur_packages.txt:/aur_packages.txt" \
-              -w "/build" \
-              -u "$(id -u):$(id -g)" \
-              --tmpfs /tmp:exec \
-              docker.io/archlinux \
-              sh -c "sudo useradd -m builder && sudo chown -R builder:builder /build && su builder -c 'cd /build && makepkg --syncdeps --noconfirm && cp *.pkg.tar.zst /build'"
-          done < aur_packages.txt
-
-
-      - name: Upload Packages to Release
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: |
-            $(ls -1 *.pkg.tar.zst | xargs)
-          asset_name: |
-            $(ls -1 *.pkg.tar.zst | xargs)
-          asset_content_type: application/x-gzip
-          token: ${{ secrets.GITHUB_TOKEN }}
+          if [[ `git status --porcelain` ]]; then
+            git config user.name 'github-actions[bot]'
+            git config user.email 'github-actions[bot]@users.noreply.github.com'
+      
+            git add -A
+            git commit -m "doc: Update CHANGELOG.md"
+            git push origin HEAD:main
+          else
+            echo "WARNING: No changes were detected."
+          fi
+        shell: bash
