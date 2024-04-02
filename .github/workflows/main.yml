@@ -46,7 +46,7 @@ jobs:
       
             git add -A
             git commit -m "doc: Update CHANGELOG.md"
-            git push origin ${{ github:ref }}
+            git push
           else
             echo "WARNING: No changes were detected."
           fi
