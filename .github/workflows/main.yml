@@ -61,11 +61,14 @@ jobs:
         run: |
           git push origin HEAD:changelog
         shell: bash
-          
-      - name: pull-request
-        uses: repo-sync/pull-request@v2
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
         with:
-          destination_branch: "main"
-          github_token: ${{ secrets.GIT_BOT_TOKEN }}
-          pr_label: "Type: Automated"
-          pr_title: "[Feature] - Automated PR for updating CHANGELOG.md."
+          token: ${{ secrets.GIT_BOT_TOKEN }}
+          commit-message: 'feat: Automated PR for updating CHANGELOG.md.'
+          title: '[Feature] - Automated PR for updating CHANGELOG.md.'
+          body: 'Auto-created Pull Request'
+          labels: 'Type: Automated'
+          branch: ${{ github.ref }} # The branch where you commit
+          base: 'main' # Don't forget to specify the right base branch here
