@@ -38,8 +38,7 @@ jobs:
       - name: Commit and push changes
         run: |
           COMMIT_AUTHOR=$(git log -1 --pretty=%an)
-          echo "$COMMIT_AUTHOR"
-          if [[ "$COMMIT_AUTHOR" != "github-tty" ]]; then
+          if [[ "$COMMIT_AUTHOR" != "HeCodes2Much-Bot" ]]; then
             if [[ `git status --porcelain` ]]; then
               git config --global user.name ${{ secrets.GIT_NAME }}
               git config --global user.email ${{ secrets.GIT_EMAIL }}
