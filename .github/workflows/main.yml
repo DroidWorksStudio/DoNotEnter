@@ -79,4 +79,3 @@ jobs:
               base: 'main',
               body: 'Automated PR for updating CHANGELOG.md',
             });
-          shell: bash
