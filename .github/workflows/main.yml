@@ -63,12 +63,7 @@ jobs:
         shell: bash
 
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GIT_BOT_TOKEN }}
-          commit-message: update changelog
-          title: Update Changelog
-          body: Update changelog to reflect release changes
-          branch: changelog
-          base: create-pull-request/patch
+      - name: create pull request
+        run: gh pr create -B main -H changelog --title 'Merge changelog into main' --body 'Created by Github action'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_BOT_TOKEN }}
