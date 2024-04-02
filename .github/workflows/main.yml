@@ -5,7 +5,7 @@ on:
     tags:
       - '*'
     branches:
-      - main
+      - '!main'
   workflow_dispatch:
   
 jobs:
@@ -34,36 +34,17 @@ jobs:
           git_commit_gpgsign: true
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GIT_ACTIONS_GPG_KEY }}
-
-      - name: Set up Git
+      
+      - name: Commit and push changes
         run: |
-          git config --global user.name ${{ secrets.GIT_NAME }}
-          git config --global user.email ${{ secrets.GIT_EMAIL }}
-        shell: bash
-
-      - name: Check if 'changelog' branch exists
-        run: |
-          if git show-ref --quiet refs/heads/changelog; then
-            echo "Branch 'changelog' already exists."
+          if [[ `git status --porcelain` ]]; then
+            git config --global user.name ${{ secrets.GIT_NAME }}
+            git config --global user.email ${{ secrets.GIT_EMAIL }}
+      
+            git add -A
+            git commit -m "doc: Update CHANGELOG.md"
+            git push origin {{ github:ref }}
           else
-            git checkout -b changelog
-            echo "Created 'changelog' branch"
+            echo "WARNING: No changes were detected."
           fi
         shell: bash
-
-      - name: Commit changes
-        run: |
-          git add -A
-          git commit -m "doc: Update CHANGELOG.md"
-        shell: bash
-
-      - name: Push changes to 'changelog' branch
-        run: |
-          git push origin changelog
-        shell: bash
-
-
-      - name: create pull request
-        run: gh pr create -B main -H changelog --title 'Merge changelog into main' --body 'Created by Github action'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_BOT_TOKEN }}
