@@ -5,8 +5,10 @@ on:
     tags:
       - '*'
     branches:
-      - '*'
-      - '!main'
+      - '*'         # matches every branch that doesn't contain a '/'
+      - '*/*'       # matches every branch containing a single '/'
+      - '**'        # matches every branch
+      - '!master'   # excludes master
   workflow_dispatch:
   
 jobs:
