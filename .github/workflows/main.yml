@@ -67,13 +67,13 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const gitlab = require('@actions/github');
-            const context = gitlab.context;
-            const octokit = new gitlab.GitHub(process.env.GITHUB_TOKEN);
+            const github2 = require('@actions/github');
+            const context2 = github2.context;
+            const octokit2 = new github.GitHub(process.env.GITHUB_TOKEN);
 
-            const pr = await octokit.pulls.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
+            const pr = await octokit2.pulls.create({
+              owner: context2.repo.owner,
+              repo: context2.repo.repo,
               title: 'Update CHANGELOG.md',
               head: 'changelog',
               base: 'main',
