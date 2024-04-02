@@ -59,7 +59,7 @@ jobs:
 
       - name: Push changes to 'changelog' branch
         run: |
-          git push origin HEAD:changelog
+          git push origin changelog
         shell: bash
 
       - name: Create Pull Request
