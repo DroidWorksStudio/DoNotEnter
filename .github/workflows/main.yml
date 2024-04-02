@@ -62,20 +62,10 @@ jobs:
           git push origin HEAD:changelog
         shell: bash
           
-      - name: Create pull request
-        uses: actions/github-script@v4
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const github2 = require('@actions/github');
-            const context2 = github2.context;
-            const octokit2 = new github.GitHub(process.env.GITHUB_TOKEN);
-
-            const pr = await octokit2.pulls.create({
-              owner: context2.repo.owner,
-              repo: context2.repo.repo,
-              title: 'Update CHANGELOG.md',
-              head: 'changelog',
-              base: 'main',
-              body: 'Automated PR for updating CHANGELOG.md',
-            });
+          destination_branch: "main"
+          github_token: ${{ secrets.GIT_BOT_TOKEN }}
+          pr_label: "Type: Automated"
+          pr_title: "[Feature] - Automated PR for updating CHANGELOG.md."
