@@ -67,9 +67,9 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const github = require('@actions/github');
-            const context = github.context;
-            const octokit = new github.GitHub(process.env.GITHUB_TOKEN);
+            const gitlab = require('@actions/github');
+            const context = gitlab.context;
+            const octokit = new gitlab.GitHub(process.env.GITHUB_TOKEN);
 
             const pr = await octokit.pulls.create({
               owner: context.repo.owner,
