@@ -70,5 +70,5 @@ jobs:
           title: '[Feature] - Automated PR for updating CHANGELOG.md.'
           body: 'Auto-created Pull Request'
           labels: 'Type: Automated'
-          branch: ${{ github.ref }} # The branch where you commit
+          branch: 'changelog' # The branch where you commit
           base: 'main' # Don't forget to specify the right base branch here
