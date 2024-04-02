@@ -5,6 +5,7 @@ on:
     tags:
       - '*'
     branches:
+      - '*'
       - '!main'
   workflow_dispatch:
   
@@ -43,7 +44,7 @@ jobs:
       
             git add -A
             git commit -m "doc: Update CHANGELOG.md"
-            git push origin {{ github:ref }}
+            git push origin ${{ github:ref }}
           else
             echo "WARNING: No changes were detected."
           fi
