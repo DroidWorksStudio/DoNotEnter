@@ -5,10 +5,7 @@ on:
     tags:
       - '*'
     branches:
-      - '*'         # matches every branch that doesn't contain a '/'
-      - '*/*'       # matches every branch containing a single '/'
-      - '**'        # matches every branch
-      - '!main'   # excludes main
+      - 'main'
   workflow_dispatch:
   
 jobs:
@@ -18,7 +15,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
         with:
-          token: ${{ github.token }}
+          token: ${{ secrets.GIT_BOT_TOKEN }}
           fetch-depth: 0
 
       - name: Generate a changelog
@@ -40,14 +37,19 @@ jobs:
       
       - name: Commit and push changes
         run: |
-          if [[ `git status --porcelain` ]]; then
-            git config --global user.name ${{ secrets.GIT_NAME }}
-            git config --global user.email ${{ secrets.GIT_EMAIL }}
-      
-            git add -A
-            git commit -m "doc: Update CHANGELOG.md"
-            git push
+          COMMIT_AUTHOR=$(git log -1 --pretty=%an)
+          if [[ "$COMMIT_AUTHOR" != "github-tty" ]]; then
+            if [[ `git status --porcelain` ]]; then
+              git config --global user.name ${{ secrets.GIT_NAME }}
+              git config --global user.email ${{ secrets.GIT_EMAIL }}
+        
+              git add -A
+              git commit -m "doc: Update CHANGELOG.md"
+              git push
+            else
+              echo "WARNING: No changes were detected."
+            fi
           else
-            echo "WARNING: No changes were detected."
+            echo "WARNING: $COMMIT_AUTHOR last commited."
           fi
         shell: bash
