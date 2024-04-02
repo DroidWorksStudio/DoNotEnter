@@ -1,4 +1,4 @@
-oname: Update CHANGELOG.md
+name: Update CHANGELOG.md
 
 on:
   push:
