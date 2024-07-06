@@ -45,9 +45,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-commits
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v3
-
       - name: Delete existing nightly release
         if: needs.check-commits.outputs.has_new_commits == 'true'
         env:
