@@ -39,7 +39,7 @@ jobs:
       - name: Extract 'Coming Soon' from CHANGELOG.md
         id: extract-changelog
         run: |
-          changelog_content=$(awk '/^## \[Coming Soon\]/,/^## /{print}' CHANGELOG.md)
+          changelog_content=$(awk '/^## \[Coming Soon\]/{flag=1; next} /^## /{flag=0} flag' CHANGELOG.md)
           if [ -z "$changelog_content" ]; then
             echo "has_new_commits=false" >> $GITHUB_ENV
           else
