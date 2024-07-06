@@ -43,10 +43,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          old_tags=$(git tag -l 'nightly-*' --sort=-creatordate | tail -n +8) # Keep the last 7 nightly tags
-          if [ -n "$old_tags" ]; then
-            echo "$old_tags" | xargs -I {} git push --delete origin {}
-            echo "$old_tags" | xargs -I {} git tag -d {}
+          # Delete existing nightly tag if it exists
+          if git rev-parse --verify --quiet nightly; then
+            git tag -d nightly
+            git push origin :refs/tags/nightly
           fi
 
       - name: Create a new release
@@ -57,6 +57,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: nightly
-          release_name: Nightly Build $(date +'%Y-%m-%d')
+          release_name: Nightly Build
           draft: false
           prerelease: true
