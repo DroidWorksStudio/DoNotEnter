@@ -17,12 +17,12 @@ jobs:
 
       - name: Get the date of the last run
         id: last-run
-        run: echo "date=$(date -u -d '1 day ago' +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
+        run: echo "DATE=$(date -u -d '1 day ago' +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
 
       - name: Check for new commits since the last run
         id: check-for-commits
         run: |
-          last_run_date=$(echo "${{ env.date }}" | xargs -I {} date -u -d {} +'%Y-%m-%dT%H:%M:%SZ')
+          last_run_date=$(echo "${{ env.DATE }}" | xargs -I {} date -u -d {} +'%Y-%m-%dT%H:%M:%SZ')
           new_commits=$(git log --since="$last_run_date" --oneline)
           if [ -n "$new_commits" ]; then
             echo "has_new_commits=true" >> $GITHUB_OUTPUT
@@ -33,7 +33,7 @@ jobs:
       - name: Extract 'Coming Soon' from CHANGELOG.md
         id: extract-changelog
         run: |
-          changelog_content=$(awk '/^## \[Coming Soon\]/{flag=1; next} /^## /{flag=0} flag' CHANGELOG.md)
+          changelog_content=$(awk '/^## \[Coming Soon\]/{flag=1; next} /^## /{flag=0} flag' CHANGELOG.md | tr '\n' ' ')
           echo "changelog_content=${changelog_content}" >> $GITHUB_OUTPUT
           if [ -z "$changelog_content" ]; then
             echo "has_new_commits=false" >> $GITHUB_OUTPUT
@@ -74,6 +74,4 @@ jobs:
 
       - name: No new commits
         if: needs.check-commits.outputs.has_new_commits == 'false'
-        run:  |
-            echo $GITHUB_OUTPUT
-            echo "No new commits found."
+        run: echo "No new commits found."
