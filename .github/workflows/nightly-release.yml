@@ -12,7 +12,7 @@ jobs:
       has_new_commits: ${{ steps.check-for-commits.outputs.has_new_commits }}
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4.1.7
 
       - name: Get the date of the last run
         id: last-run
@@ -36,7 +36,7 @@ jobs:
     if: ${{ needs.check-commits.outputs.has_new_commits == 'true' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4.1.7
         
       - name: Delete old nightly tags
         if: needs.check-commits.outputs.has_new_commits == 'true'
@@ -52,7 +52,7 @@ jobs:
       - name: Create a new release
         if: needs.check-commits.outputs.has_new_commits == 'true' || github.event_name == 'workflow_dispatch'
         id: create_release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v1.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
