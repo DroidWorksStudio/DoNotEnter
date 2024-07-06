@@ -69,8 +69,7 @@ jobs:
           release_name: Nightly Build
           draft: false
           prerelease: true
-          body: |
-            ${{ fromJson(needs.check-commits.outputs.changelog_content | fromBase64) || 'No changes specified.' }}
+          body: ${{ fromJson(needs.check-commits.outputs.changelog_content | fromBase64) || 'No changes specified.' }}
 
       - name: No new commits
         if: needs.check-commits.outputs.has_new_commits == 'false'
