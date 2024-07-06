@@ -59,17 +59,23 @@ jobs:
               "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/${release_id}"
           fi
 
+      - name: Set up Release Body
+        if: needs.check-commits.outputs.has_new_commits == 'true'
+        id: set-release-body
+        run: echo "RELEASE_BODY=$(cat changelog_section.txt)" >> $GITHUB_ENV
+
       - name: Create new release
         if: needs.check-commits.outputs.has_new_commits == 'true'
         uses: actions/create-release@v1.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_BODY: ${{ env.RELEASE_BODY }}
         with:
           tag_name: nightly
           release_name: Nightly Build
           draft: false
           prerelease: true
-          body: ${{ needs.check-commits.outputs.changelog_content }}
+          body: ${{ env.RELEASE_BODY }}
 
       - name: No new commits
         if: needs.check-commits.outputs.has_new_commits == 'false'
