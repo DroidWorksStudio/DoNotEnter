@@ -51,6 +51,7 @@ jobs:
 
       - name: Create a new release
         if: needs.check-commits.outputs.has_new_commits == 'true' || github.event_name == 'workflow_dispatch'
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
