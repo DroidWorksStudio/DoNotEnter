@@ -2,8 +2,8 @@ name: Nightly Release
 
 on:
   schedule:
-    - cron: '0 0 * * *' # This runs at midnight UTC every day
-  workflow_dispatch: # This allows the workflow to be triggered manually
+    - cron: '0 0 * * *'  # This runs at midnight UTC every day
+  workflow_dispatch:   # This allows the workflow to be triggered manually
 
 jobs:
   check-commits:
@@ -49,6 +49,9 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
+
+      - name: Wait for check-commits job to complete
+        run: echo "check-commits job has completed!"
 
       - name: Delete existing nightly release
         if: needs.check-commits.outputs.has_new_commits == 'true'
