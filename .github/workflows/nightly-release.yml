@@ -8,6 +8,8 @@ on:
 jobs:
   check-commits:
     runs-on: ubuntu-latest
+    outputs:
+      has_new_commits: ${{ steps.check-for-commits.outputs.has_new_commits }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v2
@@ -18,21 +20,26 @@ jobs:
           echo "::set-output name=date::$(date -u -d '1 day ago' +'%Y-%m-%dT%H:%M:%SZ')"
 
       - name: Check for new commits since the last run
-        id: new-commits
+        id: check-for-commits
         run: |
           last_run_date=$(date -u -d ${{ steps.last-run.outputs.date }} +'%Y-%m-%dT%H:%M:%SZ')
           new_commits=$(git log --since="$last_run_date" --oneline)
-          echo "::set-output name=has_new_commits::$(test -n "$new_commits" && echo 'true' || echo 'false')"
+          if [ -n "$new_commits" ]; then
+            echo "::set-output name=has_new_commits::true"
+          else
+            echo "::set-output name=has_new_commits::false"
+          fi
 
   release:
     runs-on: ubuntu-latest
     needs: check-commits
-    if: steps.new-commits.outputs.has_new_commits == 'true'
+    if: ${{ needs.check-commits.outputs.has_new_commits == 'true' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v2
         
       - name: Delete old nightly tags
+        if: needs.check-commits.outputs.has_new_commits == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -43,6 +50,7 @@ jobs:
           fi
 
       - name: Create a new release
+        if: needs.check-commits.outputs.has_new_commits == 'true' || github.event_name == 'workflow_dispatch'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
