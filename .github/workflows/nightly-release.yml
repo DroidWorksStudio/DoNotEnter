@@ -1,0 +1,53 @@
+name: Nightly Release
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # This runs at midnight UTC every day
+  workflow_dispatch: # This allows the workflow to be triggered manually
+
+jobs:
+  check-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Get the date of the last run
+        id: last-run
+        run: |
+          echo "::set-output name=date::$(date -u -d '1 day ago' +'%Y-%m-%dT%H:%M:%SZ')"
+
+      - name: Check for new commits since the last run
+        id: new-commits
+        run: |
+          last_run_date=$(date -u -d ${{ steps.last-run.outputs.date }} +'%Y-%m-%dT%H:%M:%SZ')
+          new_commits=$(git log --since="$last_run_date" --oneline)
+          echo "::set-output name=has_new_commits::$(test -n "$new_commits" && echo 'true' || echo 'false')"
+
+  release:
+    runs-on: ubuntu-latest
+    needs: check-commits
+    if: steps.new-commits.outputs.has_new_commits == 'true'
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+        
+      - name: Delete old nightly tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          old_tags=$(git tag -l 'nightly-*' --sort=-creatordate | tail -n +8) # Keep the last 7 nightly tags
+          if [ -n "$old_tags" ]; then
+            echo "$old_tags" | xargs -I {} git push --delete origin {}
+            echo "$old_tags" | xargs -I {} git tag -d {}
+          fi
+
+      - name: Create a new release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: nightly-$(date +'%Y%m%d')
+          release_name: Nightly Build $(date +'%Y-%m-%d')
+          draft: false
+          prerelease: true
