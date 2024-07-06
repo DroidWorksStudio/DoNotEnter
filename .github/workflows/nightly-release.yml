@@ -12,7 +12,7 @@ jobs:
       has_new_commits: ${{ steps.check-for-commits.outputs.has_new_commits }}
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v2
 
       - name: Get the date of the last run
         id: last-run
@@ -36,7 +36,7 @@ jobs:
     if: ${{ needs.check-commits.outputs.has_new_commits == 'true' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v2
         
       - name: Delete old nightly tags
         if: needs.check-commits.outputs.has_new_commits == 'true'
@@ -48,10 +48,6 @@ jobs:
             echo "$old_tags" | xargs -I {} git push --delete origin {}
             echo "$old_tags" | xargs -I {} git tag -d {}
           fi
-
-      - name: Debug tag_name
-        run: |
-          echo "Tag name: nightly-$(date +'%Y%m%d')"
 
       - name: Create a new release
         if: needs.check-commits.outputs.has_new_commits == 'true' || github.event_name == 'workflow_dispatch'
