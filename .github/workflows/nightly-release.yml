@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       has_new_commits: ${{ steps.check-for-commits.outputs.has_new_commits }}
-      changelog_content_path: ${{ steps.extract-changelog.outputs.changelog_content_path }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
@@ -33,6 +32,8 @@ jobs:
   release:
     runs-on: ubuntu-latest
     needs: check-commits
+    outputs:
+        changelog_content_path: ${{ steps.extract-changelog.outputs.changelog_content_path }}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -54,7 +55,7 @@ jobs:
         if: needs.check-commits.outputs.has_new_commits == 'true'
         id: set-release-body
         run: |
-          RELEASE_BODY=$(cat ${{ needs.check-commits.outputs.changelog_content_path }})
+          RELEASE_BODY=$(cat ${{ needs.release.outputs.changelog_content_path }})
           echo "RELEASE_BODY=$RELEASE_BODY" >> $GITHUB_ENV
 
       - name: Delete existing nightly release
