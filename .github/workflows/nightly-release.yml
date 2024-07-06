@@ -60,12 +60,16 @@ jobs:
               "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/${release_id}"
           fi
 
+      - name: Read changelog content
+        id: read-changelog
+        run: echo "RELEASE_BODY=$(cat ${{ needs.check-commits.outputs.changelog_content_path }})" >> $GITHUB_ENV
+
       - name: Create new release
         if: needs.check-commits.outputs.has_new_commits == 'true'
         uses: actions/create-release@v1.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_BODY: $(cat ${{ needs.check-commits.outputs.changelog_content_path }})
+          RELEASE_BODY: ${{ env.RELEASE_BODY }}
         with:
           tag_name: nightly
           release_name: Nightly Build
