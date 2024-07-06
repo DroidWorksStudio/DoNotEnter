@@ -72,7 +72,7 @@ jobs:
           prerelease: true
           body: |
             ${{
-              needs.check-commits.outputs.changelog_content || 'No changes specified.'
+              needs.extract-changelog.outputs.changelog_content || 'No changes specified.'
             }}
 
       - name: No new commits
