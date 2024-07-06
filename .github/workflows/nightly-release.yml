@@ -33,10 +33,10 @@ jobs:
       - name: Extract 'Coming Soon' from CHANGELOG.md
         id: extract-changelog
         run: |
-          mkdir -p $GITHUB_WORKSPACE/extracted
+          mkdir -p extracted
           changelog_content=$(awk '/^## \[Coming Soon\]/{flag=1; next} /^## /{flag=0} flag' CHANGELOG.md)
-          echo "$changelog_content" > $GITHUB_WORKSPACE/extracted/changelog_section.txt
-          echo "::set-output name=changelog_content_path::$GITHUB_WORKSPACE/extracted/changelog_section.txt"
+          echo "$changelog_content" > extracted/changelog_section.txt
+          echo "::set-output name=changelog_content_path::extracted/changelog_section.txt"
           if [ -z "$changelog_content" ]; then
             echo "::set-output name=has_new_commits::false"
           fi
@@ -53,6 +53,13 @@ jobs:
       - name: Wait for check-commits job to complete
         run: echo "check-commits job has completed!"
 
+      - name: Set up Release Body
+        if: needs.check-commits.outputs.has_new_commits == 'true'
+        id: set-release-body
+        run: |
+          RELEASE_BODY=$(cat ${{ needs.check-commits.outputs.changelog_content_path }})
+          echo "RELEASE_BODY=$RELEASE_BODY" >> $GITHUB_ENV
+
       - name: Delete existing nightly release
         if: needs.check-commits.outputs.has_new_commits == 'true'
         env:
@@ -65,13 +72,6 @@ jobs:
               -X DELETE \
               "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/${release_id}"
           fi
-
-      - name: Set up Release Body
-        if: needs.check-commits.outputs.has_new_commits == 'true'
-        id: set-release-body
-        run: |
-          RELEASE_BODY=$(cat ${{ needs.check-commits.outputs.changelog_content_path }})
-          echo "RELEASE_BODY=$RELEASE_BODY" >> $GITHUB_ENV
 
       - name: Create new release
         if: needs.check-commits.outputs.has_new_commits == 'true'
