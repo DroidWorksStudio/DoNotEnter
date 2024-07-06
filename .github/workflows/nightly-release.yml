@@ -58,6 +58,19 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v2
 
+      - name: Delete existing nightly release
+        if: needs.check-commits.outputs.has_new_commits == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          release_id=$(curl -sSf -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/tags/nightly" | jq -r '.id')
+          if [ -n "$release_id" ]; then
+            curl -sSf \
+              -H "Authorization: Bearer $GITHUB_TOKEN" \
+              -X DELETE \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/${release_id}"
+          fi
+
       - name: Create a new release
         if: needs.check-commits.outputs.has_new_commits == 'true' || github.event_name == 'workflow_dispatch'
         id: create_release
