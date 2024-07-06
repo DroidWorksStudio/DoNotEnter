@@ -34,7 +34,7 @@ jobs:
       - name: Extract 'Coming Soon' from CHANGELOG.md
         id: extract-changelog
         run: |
-          changelog_content=$(awk '/^## Coming Soon$/{flag=1; next}/^##/{flag=0}flag' CHANGELOG.md)
+          changelog_content=$(awk '/^## \[Coming Soon\]/{flag=1; next} /^## /{flag=0} flag' CHANGELOG.md)
           echo "::set-output name=changelog_content::$changelog_content"
           if [ -z "$changelog_content" ]; then
             echo "::set-output name=has_new_commits::false"
