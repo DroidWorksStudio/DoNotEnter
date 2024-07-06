@@ -71,12 +71,8 @@ jobs:
           draft: false
           prerelease: true
           body: |
-            ${{ steps.decode-changelog.outputs.changelog_content }}
+            $(cat ${{ needs.check-commits.outputs.changelog_content_path }})
 
-      - name: Read changelog content
-        id: decode-changelog
-        if: needs.check-commits.outputs.has_new_commits == 'true'
-        run: echo "changelog_content=$(cat ${{ needs.check-commits.outputs.changelog_content_path }})" >> $GITHUB_OUTPUT
 
       - name: No new commits
         if: needs.check-commits.outputs.has_new_commits == 'false'
