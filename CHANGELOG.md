@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 - Update CHANGELOG.md
 - Update CHANGELOG.md
+- Update CHANGELOG.md
 
 ## [0.0.1] - 2024-07-06
 
