@@ -7,6 +7,12 @@ All notable changes to this project will be documented in this file.
 ### 📚 Documentation
 
 - Update CHANGELOG.md
+
+## [nightly] - 2024-07-06
+
+### 📚 Documentation
+
+- Update CHANGELOG.md
 - Update CHANGELOG.md
 - Update CHANGELOG.md
 - Update CHANGELOG.md
