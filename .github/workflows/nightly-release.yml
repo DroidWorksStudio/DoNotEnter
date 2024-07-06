@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       has_new_commits: ${{ steps.check-for-commits.outputs.has_new_commits }}
-      changelog_content_path: ${{ steps.extract-changelog.outputs.changelog_content_path }}
+      changelog_content: ${{ steps.extract-changelog.outputs.changelog_content }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
@@ -34,10 +34,9 @@ jobs:
         id: extract-changelog
         run: |
           changelog_content=$(awk '/^## \[Coming Soon\]/{flag=1; next} /^## /{flag=0} flag' CHANGELOG.md)
-          echo "$changelog_content" > changelog_section.txt
-          echo "changelog_content_path=changelog_section.txt" >> $GITHUB_OUTPUT
+          echo "::set-output name=changelog_content::$changelog_content"
           if [ -z "$changelog_content" ]; then
-            echo "has_new_commits=false" >> $GITHUB_OUTPUT
+            echo "::set-output name=has_new_commits::false"
           fi
 
   release:
@@ -60,22 +59,17 @@ jobs:
               "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/${release_id}"
           fi
 
-      - name: Read changelog content
-        id: read-changelog
-        run: echo "RELEASE_BODY=$(cat ${{ needs.check-commits.outputs.changelog_content_path }})" >> $GITHUB_ENV
-
       - name: Create new release
         if: needs.check-commits.outputs.has_new_commits == 'true'
         uses: actions/create-release@v1.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_BODY: ${{ env.RELEASE_BODY }}
         with:
           tag_name: nightly
           release_name: Nightly Build
           draft: false
           prerelease: true
-          body: ${{ env.RELEASE_BODY }}
+          body: ${{ needs.check-commits.outputs.changelog_content }}
 
       - name: No new commits
         if: needs.check-commits.outputs.has_new_commits == 'false'
