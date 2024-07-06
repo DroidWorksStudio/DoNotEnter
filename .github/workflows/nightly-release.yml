@@ -25,18 +25,16 @@ jobs:
           last_run_date=$(echo "${{ env.DATE }}" | xargs -I {} date -u -d {} +'%Y-%m-%dT%H:%M:%SZ')
           new_commits=$(git log --since="$last_run_date" --oneline)
           if [ -n "$new_commits" ]; then
-            echo "has_new_commits=true" >> $GITHUB_OUTPUT
+            echo "::set-output name=has_new_commits::true"
           else
-            echo "has_new_commits=false" >> $GITHUB_OUTPUT
+            echo "::set-output name=has_new_commits::false"
           fi
 
       - name: Extract 'Coming Soon' from CHANGELOG.md
         id: extract-changelog
         run: |
           changelog_content=$(awk '/^## \[Coming Soon\]/{flag=1; next} /^## /{flag=0} flag' CHANGELOG.md)
-          echo "$changelog_content" > changelog_section.txt
-          echo "changelog_content=$(cat changelog_section.txt)" >> $GITHUB_ENV
-          echo "::set-output name=changelog_content::$(cat changelog_section.txt)"
+          echo "::set-output name=changelog_content::$changelog_content"
           if [ -z "$changelog_content" ]; then
             echo "::set-output name=has_new_commits::false"
           fi
