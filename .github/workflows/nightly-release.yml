@@ -43,7 +43,6 @@ jobs:
           if [ -z "$changelog_content" ]; then
             echo "has_new_commits=false" >> $GITHUB_ENV
           else
-            echo "changelog_content=$changelog_content" >> $GITHUB_ENV
             echo "has_new_commits=true" >> $GITHUB_ENV
           fi
 
