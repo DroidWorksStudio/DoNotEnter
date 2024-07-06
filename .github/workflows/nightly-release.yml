@@ -13,31 +13,30 @@ jobs:
       changelog_content: ${{ steps.extract-changelog.outputs.changelog_content }}
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Get the date of the last run
         id: last-run
-        run: |
-          echo "::set-output name=date::$(date -u -d '1 day ago' +'%Y-%m-%dT%H:%M:%SZ')"
+        run: echo "date=$(date -u -d '1 day ago' +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
 
       - name: Check for new commits since the last run
         id: check-for-commits
         run: |
-          last_run_date=$(date -u -d ${{ steps.last-run.outputs.date }} +'%Y-%m-%dT%H:%M:%SZ')
+          last_run_date=$(echo "${{ env.date }}" | xargs -I {} date -u -d {} +'%Y-%m-%dT%H:%M:%SZ')
           new_commits=$(git log --since="$last_run_date" --oneline)
           if [ -n "$new_commits" ]; then
-            echo "::set-output name=has_new_commits::true"
+            echo "has_new_commits=true" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=has_new_commits::false"
+            echo "has_new_commits=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Extract 'Coming Soon' from CHANGELOG.md
         id: extract-changelog
         run: |
           changelog_content=$(awk '/^## \[Coming Soon\]/{flag=1; next} /^## /{flag=0} flag' CHANGELOG.md)
-          echo "::set-output name=changelog_content::$changelog_content"
+          echo "changelog_content=${changelog_content}" >> $GITHUB_OUTPUT
           if [ -z "$changelog_content" ]; then
-            echo "::set-output name=has_new_commits::false"
+            echo "has_new_commits=false" >> $GITHUB_OUTPUT
           fi
 
   release:
@@ -45,7 +44,7 @@ jobs:
     needs: check-commits
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Delete existing nightly release
         if: needs.check-commits.outputs.has_new_commits == 'true'
@@ -67,14 +66,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: nightly
-          release_name: Nightly Build $(date +'%Y-%m-%d')
+          release_name: Nightly Build
           draft: false
           prerelease: true
           body: |
-            ${{
-              needs.check-commits.outputs.changelog_content || 'No changes specified.'
-            }}
+            ${{ needs.check-commits.outputs.changelog_content || 'No changes specified.' }}
 
       - name: No new commits
         if: needs.check-commits.outputs.has_new_commits == 'false'
-        run: echo "No new commits found."
+        run:  |
+            echo $GITHUB_OUTPUT
+            echo "No new commits found."
