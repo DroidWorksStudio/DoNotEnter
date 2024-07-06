@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       has_new_commits: ${{ steps.check-for-commits.outputs.has_new_commits }}
-      changelog_content: ${{ steps.extract-changelog.outputs.changelog_content }}
+      changelog_content_path: ${{ steps.extract-changelog.outputs.changelog_content_path }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
@@ -33,8 +33,9 @@ jobs:
       - name: Extract 'Coming Soon' from CHANGELOG.md
         id: extract-changelog
         run: |
-          changelog_content=$(awk '/^## \[Coming Soon\]/{flag=1; next} /^## /{flag=0} flag' CHANGELOG.md | base64)
-          echo "changelog_content=${changelog_content}" >> $GITHUB_OUTPUT
+          changelog_content=$(awk '/^## \[Coming Soon\]/{flag=1; next} /^## /{flag=0} flag' CHANGELOG.md)
+          echo "$changelog_content" > changelog_section.txt
+          echo "changelog_content_path=changelog_section.txt" >> $GITHUB_OUTPUT
           if [ -z "$changelog_content" ]; then
             echo "has_new_commits=false" >> $GITHUB_OUTPUT
           fi
@@ -59,11 +60,6 @@ jobs:
               "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/${release_id}"
           fi
 
-      - name: Decode changelog content
-        id: decode-changelog
-        if: needs.check-commits.outputs.has_new_commits == 'true'
-        run: echo "${{ needs.check-commits.outputs.changelog_content }}" | base64 --decode > changelog_decoded.txt
-
       - name: Create new release
         if: needs.check-commits.outputs.has_new_commits == 'true'
         uses: actions/create-release@v1.1.4
@@ -75,7 +71,12 @@ jobs:
           draft: false
           prerelease: true
           body: |
-            $(cat changelog_decoded.txt)
+            ${{ steps.decode-changelog.outputs.changelog_content }}
+
+      - name: Read changelog content
+        id: decode-changelog
+        if: needs.check-commits.outputs.has_new_commits == 'true'
+        run: echo "changelog_content=$(cat ${{ needs.check-commits.outputs.changelog_content_path }})" >> $GITHUB_OUTPUT
 
       - name: No new commits
         if: needs.check-commits.outputs.has_new_commits == 'false'
