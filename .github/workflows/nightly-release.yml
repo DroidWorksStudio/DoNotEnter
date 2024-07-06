@@ -30,6 +30,15 @@ jobs:
             echo "::set-output name=has_new_commits::false"
           fi
 
+  release:
+    runs-on: ubuntu-latest
+    needs: check-commits
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
       - name: Extract 'Coming Soon' from CHANGELOG.md
         id: extract-changelog
         run: |
@@ -40,18 +49,6 @@ jobs:
           if [ -z "$changelog_content" ]; then
             echo "::set-output name=has_new_commits::false"
           fi
-
-  release:
-    runs-on: ubuntu-latest
-    needs: check-commits
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v3
-
-      - name: Wait for check-commits job to complete
-        run: echo "check-commits job has completed!"
 
       - name: Set up Release Body
         if: needs.check-commits.outputs.has_new_commits == 'true'
