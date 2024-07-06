@@ -59,6 +59,11 @@ jobs:
               "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/${release_id}"
           fi
 
+      - name: Decode changelog content
+        id: decode-changelog
+        if: needs.check-commits.outputs.has_new_commits == 'true'
+        run: echo "${{ needs.check-commits.outputs.changelog_content }}" | base64 --decode > changelog_decoded.txt
+
       - name: Create new release
         if: needs.check-commits.outputs.has_new_commits == 'true'
         uses: actions/create-release@v1.1.4
@@ -69,7 +74,8 @@ jobs:
           release_name: Nightly Build
           draft: false
           prerelease: true
-          body: ${{ fromJson(needs.check-commits.outputs.changelog_content | fromBase64) || 'No changes specified.' }}
+          body: |
+            $(cat changelog_decoded.txt)
 
       - name: No new commits
         if: needs.check-commits.outputs.has_new_commits == 'false'
