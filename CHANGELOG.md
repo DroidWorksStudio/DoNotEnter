@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 ### Documentation:
 
+- Update CHANGELOG.md - ([ebf3511](https://github.com/DroidWorksStudio/DoNotEnter/commit/ebf35118cdd9d21cc221652ac0a1eeab6bda2711))
 - Update CHANGELOG.md - ([934213e](https://github.com/DroidWorksStudio/DoNotEnter/commit/934213eb74606ec6bf99ce4b5c796d09a71c5160))
 - Update CHANGELOG.md - ([b6207dd](https://github.com/DroidWorksStudio/DoNotEnter/commit/b6207dda3686104cf8c353985fd9283d9038ce64))
 - Update CHANGELOG.md - ([ebd2816](https://github.com/DroidWorksStudio/DoNotEnter/commit/ebd28166dc65950ca0b712021ca07083403d2ec9))
