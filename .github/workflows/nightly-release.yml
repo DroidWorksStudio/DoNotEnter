@@ -33,9 +33,10 @@ jobs:
       - name: Extract 'Coming Soon' from CHANGELOG.md
         id: extract-changelog
         run: |
+          mkdir -p $GITHUB_WORKSPACE/extracted
           changelog_content=$(awk '/^## \[Coming Soon\]/{flag=1; next} /^## /{flag=0} flag' CHANGELOG.md)
-          echo "$changelog_content" > $GITHUB_WORKSPACE/changelog_section.txt
-          echo "::set-output name=changelog_content_path::$GITHUB_WORKSPACE/changelog_section.txt"
+          echo "$changelog_content" > $GITHUB_WORKSPACE/extracted/changelog_section.txt
+          echo "::set-output name=changelog_content_path::$GITHUB_WORKSPACE/extracted/changelog_section.txt"
           if [ -z "$changelog_content" ]; then
             echo "::set-output name=has_new_commits::false"
           fi
