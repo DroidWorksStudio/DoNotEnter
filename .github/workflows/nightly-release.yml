@@ -34,7 +34,9 @@ jobs:
         id: extract-changelog
         run: |
           changelog_content=$(awk '/^## \[Coming Soon\]/{flag=1; next} /^## /{flag=0} flag' CHANGELOG.md)
-          echo "::set-output name=changelog_content::$changelog_content"
+          echo "$changelog_content" > changelog_section.txt
+          echo "changelog_content=$(cat changelog_section.txt)" >> $GITHUB_ENV
+          echo "::set-output name=changelog_content::$(cat changelog_section.txt)"
           if [ -z "$changelog_content" ]; then
             echo "::set-output name=has_new_commits::false"
           fi
