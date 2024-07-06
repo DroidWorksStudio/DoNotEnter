@@ -59,6 +59,7 @@ jobs:
           release_name: Nightly Build
           draft: false
           prerelease: true
+          body: "This is a Nightly build"
 
       - name: No new commits
         if: needs.check-commits.outputs.has_new_commits == 'false'
