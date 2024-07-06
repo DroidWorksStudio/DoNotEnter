@@ -47,51 +47,27 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v2
         
-      - name: Delete old nightly tags
+      - name: Delete existing nightly release
         if: needs.check-commits.outputs.has_new_commits == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Delete existing nightly tag if it exists
-          if git rev-parse --verify --quiet nightly; then
-            git tag -d nightly
-            git push origin :refs/tags/nightly
-          fi
-
-      - name: Get existing release ID
-        if: needs.check-commits.outputs.has_new_commits == 'true'
-        id: get_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           release_id=$(curl -sSf -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/tags/nightly" | jq -r '.id')
-          echo "::set-output name=release_id::$release_id"
+          if [ -n "$release_id" ]; then
+            curl -sSf \
+              -H "Authorization: Bearer $GITHUB_TOKEN" \
+              -X DELETE \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/${release_id}"
+          fi
 
-      - name: Update existing release
-        if: needs.check-commits.outputs.has_new_commits == 'true' && steps.get_release.outputs.release_id != ''
-        id: update_release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          release_id=${{ steps.get_release.outputs.release_id }}
-          curl -sSf \
-            -H "Authorization: Bearer $GITHUB_TOKEN" \
-            -H "Content-Type: application/json" \
-            -X PATCH \
-            -d '{
-              "body": "'"${{ needs.check-commits.outputs.changelog_content }}\n\nAdditional information can go here."'"
-            }' \
-            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/${release_id}"
-
-      - name: Create new release if update fails
-        if: needs.check-commits.outputs.has_new_commits == 'true' && steps.get_release.outputs.release_id == ''
-        id: create_release
+      - name: Create new release
+        if: needs.check-commits.outputs.has_new_commits == 'true'
         uses: actions/create-release@v1.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: nightly
-          release_name: Nightly Build
+          release_name: Nightly Build $(date +'%Y-%m-%d')
           draft: false
           prerelease: true
           body: |
