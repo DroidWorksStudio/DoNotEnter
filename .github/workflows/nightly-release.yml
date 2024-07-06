@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       has_new_commits: ${{ steps.check-for-commits.outputs.has_new_commits }}
+      changelog_content: ${{ steps.extract-changelog.outputs.changelog_content }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v2
@@ -30,6 +31,15 @@ jobs:
             echo "::set-output name=has_new_commits::false"
           fi
 
+      - name: Extract 'Coming Soon' from CHANGELOG.md
+        id: extract-changelog
+        run: |
+          changelog_content=$(awk '/^## Coming Soon$/,/^##/ {print}' CHANGELOG.md)
+          echo "::set-output name=changelog_content::$changelog_content"
+          if [ -z "$changelog_content" ]; then
+            echo "::set-output name=has_new_commits::false"
+          fi
+
   release:
     runs-on: ubuntu-latest
     needs: check-commits
@@ -38,46 +48,26 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v2
         
-      - name: Get existing release ID
+      - name: Delete old nightly tags
         if: needs.check-commits.outputs.has_new_commits == 'true'
-        id: get_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          release_id=$(curl -sSf -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/tags/nightly" | jq -r '.id')
-          echo "::set-output name=release_id::$release_id"
+          # Delete existing nightly tag if it exists
+          if git rev-parse --verify --quiet nightly; then
+            git tag -d nightly
+            git push origin :refs/tags/nightly
+          fi
 
-      - name: Update existing release
-        if: needs.check-commits.outputs.has_new_commits == 'true' && steps.get_release.outputs.release_id != ''
-        id: update_release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          release_id=${{ steps.get_release.outputs.release_id }}
-          curl -sSf \
-            -H "Authorization: Bearer $GITHUB_TOKEN" \
-            -H "Content-Type: application/json" \
-            -X PATCH \
-            -d '{
-              "body": "Updated nightly build for $(date +'%Y-%m-%d').\n\nAdditional information can go here."
-            }' \
-            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/${release_id}"
-
-      - name: Create new release if update fails
-        if: needs.check-commits.outputs.has_new_commits == 'true' && steps.get_release.outputs.release_id == ''
+      - name: Create a new release
+        if: needs.check-commits.outputs.has_new_commits == 'true' || github.event_name == 'workflow_dispatch'
         id: create_release
         uses: actions/create-release@v1.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: nightly
-          release_name: Nightly Build
+          release_name: Nightly Build $(date +'%Y-%m-%d')
           draft: false
           prerelease: true
-          body: |
-            This is the nightly build for.
-            <!-- Add any additional information here -->
-
-      - name: No new commits
-        if: needs.check-commits.outputs.has_new_commits == 'false'
-        run: echo "No new commits found."
+          body: ${{ needs.check-commits.outputs.changelog_content }}
