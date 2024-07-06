@@ -41,6 +41,7 @@ jobs:
         run: |
           changelog_content=$(awk '/^## \[Coming Soon\]/{flag=1; next} /^## /{flag=0} flag' CHANGELOG.md)
           if [ -z "$changelog_content" ]; then
+            echo $changelog_content >> $CHANGELOG_CONTENT
             echo "has_new_commits=false" >> $GITHUB_ENV
           else
             echo "has_new_commits=true" >> $GITHUB_ENV
