@@ -75,7 +75,7 @@ jobs:
           draft: false
           prerelease: true
           body: |
-            This is the nightly build for $(date +'%Y-%m-%d').
+            This is the nightly build for.
             <!-- Add any additional information here -->
 
       - name: No new commits
