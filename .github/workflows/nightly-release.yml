@@ -13,6 +13,7 @@ jobs:
     outputs:
       has_new_commits: ${{ steps.check-for-commits.outputs.has_new_commits }}
       changelog_content: ${{ steps.extract-changelog.outputs.changelog_content }}
+      last_run_date: ${{ steps.last-run.outputs.date }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v2
@@ -27,7 +28,7 @@ jobs:
       - name: Check for new commits since the last run
         id: check-for-commits
         run: |
-          last_run_date=$(date -u -d ${{ needs.check-commits.outputs.date }} +'%Y-%m-%dT%H:%M:%SZ')
+          last_run_date="${{ needs.check-commits.outputs.date }}"
           new_commits=$(git log --since="$last_run_date" --oneline)
           if [ -n "$new_commits" ]; then
             echo "has_new_commits=true" >> $GITHUB_ENV
