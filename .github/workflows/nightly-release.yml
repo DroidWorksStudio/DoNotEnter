@@ -71,7 +71,7 @@ jobs:
           draft: false
           prerelease: true
           body: |
-            $(cat ${{ needs.check-commits.outputs.changelog_content_path }})
+            cat ${{ needs.check-commits.outputs.changelog_content_path }}
 
 
       - name: No new commits
