@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [0.0.1] - 2024-07-06
 
 ### 📚 Documentation
 
@@ -30,6 +30,7 @@ All notable changes to this project will be documented in this file.
 - Update CHANGELOG.md
 - Update CHANGELOG.md
 - Update CHANGELOG.md (#23)
+- Update CHANGELOG.md
 - Update CHANGELOG.md
 - Update CHANGELOG.md
 - Update CHANGELOG.md
