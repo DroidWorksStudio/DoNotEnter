@@ -4,8 +4,13 @@ All notable changes to this project will be documented in this file. See [conven
 
 ## [Coming Soon](https://github.com/DroidWorksStudio/EasyLauncher/tree/HEAD)
 
+### Bug Fixes:
+
+- Fix Endpoint - ([19eaa08](https://github.com/DroidWorksStudio/DoNotEnter/commit/19eaa08367b0af1eeb6a0c5c808ae8d00bdf1df8))
+
 ### Documentation:
 
+- Update CHANGELOG.md - ([d94fa96](https://github.com/DroidWorksStudio/DoNotEnter/commit/d94fa967a5f616cd4833edbabf52d75c65bdbf50))
 - Update CHANGELOG.md - ([f13f767](https://github.com/DroidWorksStudio/DoNotEnter/commit/f13f7678d1e0be0d4b6659cec7ce7aea95451d93))
 - Update CHANGELOG.md - ([93010e5](https://github.com/DroidWorksStudio/DoNotEnter/commit/93010e5e816125ec95ab9895d5a6531afc24e99a))
 - Update CHANGELOG.md - ([21ea78f](https://github.com/DroidWorksStudio/DoNotEnter/commit/21ea78f47b5d1edca86cdecb54baeaf9978e3518))
@@ -65,15 +70,6 @@ All notable changes to this project will be documented in this file. See [conven
 - Update CHANGELOG.md - ([2d147a9](https://github.com/DroidWorksStudio/DoNotEnter/commit/2d147a96d32a3d137eb26662829a18fad817be04))
 - Update CHANGELOG.md - ([936934b](https://github.com/DroidWorksStudio/DoNotEnter/commit/936934b85d15f3fb0c8ebfc36bc2b0d96be10445))
 - Update CHANGELOG.md - ([28bc465](https://github.com/DroidWorksStudio/DoNotEnter/commit/28bc465231624691ee060e61f40f4331cdd98428))
-
-## [0.0.1](https://github.com/DroidWorksStudio/EasyLauncher/tree/0.0.1) - (06, July 2024)
-
-### Bug Fixes:
-
-- Fix Endpoint - ([19eaa08](https://github.com/DroidWorksStudio/DoNotEnter/commit/19eaa08367b0af1eeb6a0c5c808ae8d00bdf1df8))
-
-### Documentation:
-
 - Update CHANGELOG.md - ([4d189ab](https://github.com/DroidWorksStudio/DoNotEnter/commit/4d189ab39c494da39ffa5e252749b3b4f3bb638b))
 - Update CHANGELOG.md - ([db4b92c](https://github.com/DroidWorksStudio/DoNotEnter/commit/db4b92c140509a024bee19efd3633891b69c4840))
 - Update CHANGELOG.md - ([8f5c58f](https://github.com/DroidWorksStudio/DoNotEnter/commit/8f5c58f75a8e927abf90bd7d02c65eb0c16939d8))
