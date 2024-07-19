@@ -18,7 +18,7 @@ jobs:
 
       - name: Delete existing nightly release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GIT_BOT_TOKEN }}
         run: |
           release_id=$(curl -sSf -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/tags/nightly" | jq -r '.id')
           if [ -n "$release_id" ]; then
@@ -38,24 +38,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: release
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4.1.7
-
-      - name: Delete existing nightly release
-        if: needs.check-commits.outputs.has_new_commits == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          release_id=$(curl -sSf -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/tags/nightly" | jq -r '.id')
-          if [ -n "$release_id" ]; then
-            curl -sSf \
-              -H "Authorization: Bearer $GITHUB_TOKEN" \
-              -X DELETE \
-              "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/${release_id}"
-          fi
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Extract Version
         id: extract_version
@@ -64,14 +49,16 @@ jobs:
           echo "version=$version" >> $GITHUB_ENV
         shell: bash
 
-      - name: Create new release
-        if: needs.check-commits.outputs.has_new_commits == 'true'
-        uses: actions/create-release@v1.1.4
+      - name: Create and Upload Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: nightly
-          release_name: Nightly Build ${{ env.version }}
-          draft: false
+          name: Nightly Release ${{ env.version }}
+          body: "![GitHub Downloads (specific asset, specific tag)](https://img.shields.io/github/downloads/ChrisTitusTech/linutil/${{ env.version }}/linutil)"
+          append_body: false
           prerelease: true
-          body: "This is a Nightly build"
+          generate_release_notes: true
         env:
           version: ${{ env.version }}
+          GITHUB_TOKEN: ${{ secrets.GIT_BOT_TOKEN }}
