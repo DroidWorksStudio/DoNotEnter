@@ -23,7 +23,7 @@ navigation-testing = "2.8.7"
 work-runtime-ktx = "2.10.0"
 
 # ConstraintLayout
-constraintlayout = "2.2.0"
+constraintlayout = "2.2.1"
 constraintlayout-compose = "1.1.0"
 
 # Compose Versions
