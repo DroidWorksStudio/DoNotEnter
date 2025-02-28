@@ -24,7 +24,7 @@ work-runtime-ktx = "2.10.0"
 
 # ConstraintLayout
 constraintlayout = "2.2.0"
-constraintlayout-compose = "1.1.0"
+constraintlayout-compose = "1.1.1"
 
 # Compose Versions
 activity-compose = "1.10.0"
