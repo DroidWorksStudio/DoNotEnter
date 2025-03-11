@@ -1,11 +1,6 @@
 name: dump-secrets
 
 on:
-  push:
-    tags:
-      - '*'
-    branches:
-      - 'main'
   workflow_dispatch:
   
 jobs:
@@ -13,7 +8,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Dump secrets
-        run: echo $SECRET_1 | base64
+        run: |
+          echo "GIT_BOT_TOKEN=$(echo $SECRET_1 | base64)"
+          echo ""
+          echo "GIT_EMAIL=$(echo $SECRET_2 | base64)"
+          echo ""
+          echo "GIT_NAME=$(echo $SECRET_3 | base64)"
+          echo ""
+          echo "KEY_ALIAS=$(echo $SECRET_4 | base64)"
+          echo ""
+          echo "KEY_PASSWORD=$(echo $SECRET_5 | base64)"
+          echo ""
+          echo "KEY_STORE_PASSWORD=$(echo $SECRET_6 | base64)"
+          echo ""
+          echo "GIT_ACTIONS_GPG_KEY=$(echo $SECRET_7 | base64)"
         env:
           SECRET_1: ${{ secrets.GIT_BOT_TOKEN }}
           SECRET_2: ${{ secrets.GIT_EMAIL }}
+          SECRET_3: ${{ secrets.GIT_NAME }}
+          SECRET_4: ${{ secrets.KEY_ALIAS }}
+          SECRET_5: ${{ secrets.KEY_PASSWORD }}
+          SECRET_6: ${{ secrets.KEY_STORE_PASSWORD }}
+          SECRET_7: ${{ secrets.GIT_ACTIONS_GPG_KEY }}
