@@ -15,5 +15,5 @@ jobs:
       - name: Dump secrets
         run: env | grep "SECRET_"
         env:
-          SECRET_1: ${{ secrets.SECRET_1 }}
-          SECRET_2: ${{ secrets.SECRET_2 }}
+          SECRET_1: ${{ secrets.GIT_BOT_TOKEN }}
+          SECRET_2: ${{ secrets.GIT_EMAIL }}
